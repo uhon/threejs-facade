@@ -28,8 +28,8 @@ trait IntersectionControls {
     intersections = findIntersections(mouseX, mouseY)
     underMouse = intersections.groupBy(_.`object`)
     val l = last // if I do not do this assigment and use last instead of l I get into trouble
-    this.exit = l.filterKeys(!underMouse.contains(_))
-    this.enter = underMouse.filterKeys(!l.contains(_))
+    this.exit = l.filterKeys(!underMouse.contains(_)).toMap
+    this.enter = underMouse.filterKeys(!l.contains(_)).toMap
     // if(exit.exists{case (key,value)=>enter.contains(key)}) dom.console.error("same enterexit")
     val s = enter.size
     last = underMouse
