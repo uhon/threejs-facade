@@ -3,6 +3,8 @@ package org.denigma.threejs
 import org.scalajs.dom._
 import org.scalajs.dom.raw.{ HTMLCanvasElement, HTMLElement, HTMLImageElement }
 
+
+
 import scalajs.js
 import scalajs.js.annotation._
 import scalajs.js.typedarray._
@@ -836,7 +838,7 @@ class JSONLoader extends Loader {
   var withCredentials: Boolean = js.native
   def load(url: String, callback: js.Function2[JSonLoaderResultGeometry, js.Array[Material], Unit], texturePath: String = js.native): Unit = js.native
   def loadAjaxJSON(context: JSONLoader, url: String, callback: js.Function2[Geometry, js.Array[Material], Unit], texturePath: String = js.native, callbackProgress: js.Function1[Progress, Unit] = js.native): Unit = js.native
-  def parse(json: String, texturePath: String): js.Dynamic = js.native
+  def parse(json: String, texturePath: js.UndefOr[String] = js.undefined): js.Dynamic = js.native
 }
 
 @js.native
@@ -848,7 +850,7 @@ trait JSonLoaderResultGeometry extends Geometry {
 @JSName("THREE.LoadingManager")
 class LoadingManager extends js.Object {
   def this(onLoad: js.Function0[Unit] = js.native, onProgress: js.Function3[String, Double, Double, Unit] = js.native, onError: js.Function0[Unit] = js.native) = this()
-  var onLoad: js.Function0[Unit] = js.native
+  var onLoad: js.Function1[Texture, Unit] = js.native
   var onProgress: js.Function3[js.Any, Double, Double, Unit] = js.native
   var onError: js.Function0[Unit] = js.native
   def itemStart(url: String): Unit = js.native
@@ -1147,6 +1149,8 @@ trait MeshPhongMaterialParameters extends MaterialParameters {
   var color: Double = js.native
   var ambient: Double = js.native
   var emissive: Double = js.native
+  var emissiveMap: Texture = js.native
+  var emissiveIntensity: Double = js.native
   var specular: Double = js.native
   var shininess: Double = js.native
   var metal: Boolean = js.native
@@ -2635,13 +2639,17 @@ class CubeTexture extends Texture {
 @JSName("THREE.DataTexture")
 class DataTexture extends Texture {
   def this(data: ImageData, width: Double, height: Double, format: PixelFormat, `type`: TextureDataType, mapping: Mapping, wrapS: Wrapping, wrapT: Wrapping, magFilter: TextureFilter, minFilter: TextureFilter, anisotropy: Double = js.native) = this()
-
+  def this(data: ImageData, width: Double, height: Double, format: PixelFormat, `type`: TextureDataType) = this()
+  def this(data: ImageData, width: Double, height: Double, format: PixelFormat) = this()
+  def this(data: ImageData) = this()
   override def clone(): DataTexture = js.native
 }
 
 @js.native
 @JSName("THREE.Texture")
 class Texture extends js.Object {
+  def toJSON(meta: js.UndefOr[js.Object] = js.undefined): js.Object = js.native
+
   def this(image: js.Any, mapping: Mapping = js.native, wrapS: Wrapping = js.native, wrapT: Wrapping = js.native, magFilter: TextureFilter = js.native, minFilter: TextureFilter = js.native, format: PixelFormat = js.native, `type`: TextureDataType = js.native, anisotropy: Double = js.native) = this()
   var id: Double = js.native
   var uuid: String = js.native
